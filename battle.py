@@ -51,66 +51,67 @@ STATS:
         for move in item.moves:
             print(f"""  {move.name}  Type: {move.movetype}  Power: {move.power}""")
 
-def battle():
+def choose_battle_pokemon_1():
     print("\n\nPerfect! The Pokemon that are available for you to battle with are listed above. Take a look and choose your battle Pokemon!")
-
     battle_pokemon_1 = input("\nNow, go ahead and choose your first Pokemon:\n")
-    for item1 in available_pokemon:
-        if item1.name == battle_pokemon_1:
-            print(f'Great! {item1.name} is a great choice!')
-            break
-
+    for pokemon1 in available_pokemon:
+        if pokemon1.name == battle_pokemon_1:
+            print(f'Great! {pokemon1.name} is a great choice!')
+            battle_pokemon_1 = pokemon1
+            return battle_pokemon_1
+        
+def choose_battle_pokemon_2():
     battle_pokemon_2 = input("Now, choose your second Pokemon:\n")
-    for item2 in available_pokemon:
-        if item2.name == battle_pokemon_2:
-            print(f"{item2.name} is a great choice, too! Ready to battle? Let's do it!")
-            break
+    for pokemon2 in available_pokemon:
+        if pokemon2.name == battle_pokemon_2:
+            print(f"{pokemon2.name} is a great choice, too! Ready to battle? Let's do it!")
+            battle_pokemon_2 = pokemon2
+            return battle_pokemon_2
 
-    while item1.hp > 0 and item2.hp > 0:
-        if item1.hp >0:
-            print(f'Choose the attack {item1.name} will use:')
-            for move in item1.moves:
+def battle(battle_pokemon_1, battle_pokemon_2):
+    while battle_pokemon_1.hp > 0 and battle_pokemon_2.hp > 0:
+        if battle_pokemon_2.hp >0:
+            print(f'Choose the attack {battle_pokemon_1.name} will use:')
+            for move in battle_pokemon_1.moves:
                 print(f"""  {move.name}  Type: {move.movetype}  Power: {move.power}""")
             attack = input('Choose your attack!  ')
-            for attack1 in item1.moves:
+            for attack1 in battle_pokemon_1.moves:
                 if attack1.name == attack:
-                    break
-            if item2.weakness == attack1.movetype:
-                modifier = int(4)
-            else:
-                modifier = int(1)
-            damage = math.floor((((((2 * item1.level) / 5) + 2) * attack1.power * (item1.atk / item2.defe)) / 50) + 2) * modifier
-            item2.hp -= damage
-            if item2.hp > 0:
-                print(f'\nthe attack did {damage} damage!')
-                print(f'** {item2.name} has {item2.hp} HP remaining! **\n')
-            else:
-                print(f'\nthe attack did {damage} damage!')
-                print(f'** {item2.name} has 0 HP remaining! **\n')
-                print(f'\n{item2.name} has fainted! {item1.name} is the winner!')
+                    if battle_pokemon_2.weakness == attack1.movetype:
+                        modifier = int(4)
+                    else:
+                        modifier = int(1)
+                    damage = math.floor((((((2 * battle_pokemon_1.level) / 5) + 2) * attack1.power * (battle_pokemon_1.atk / battle_pokemon_2.defe)) / 50) + 2) * modifier
+                    battle_pokemon_2.hp -= damage
+                    if battle_pokemon_2.hp > 0:
+                        print(f'\nthe attack did {damage} damage!')
+                        print(f'** {battle_pokemon_2.name} has {battle_pokemon_2.hp} HP remaining! **\n')
+                    else:
+                        print(f'\nthe attack did {damage} damage!')
+                        print(f'** {battle_pokemon_2.name} has 0 HP remaining! **\n')
+                        print(f'\n{battle_pokemon_2.name} has fainted! {battle_pokemon_1.name} is the winner!')
 
 
-        if item2.hp > 0:
-            print(f'Choose the attack {item2.name} will use:')
-            for move in item2.moves:
+        if battle_pokemon_2.hp > 0:
+            print(f'Choose the attack {battle_pokemon_2.name} will use:')
+            for move in battle_pokemon_2.moves:
                 print(f"""  {move.name}  Type: {move.movetype}  Power: {move.power}""")
             attack = input('Choose your attack!\n')
-            for attack1 in item2.moves:
+            for attack1 in battle_pokemon_2.moves:
                 if attack1.name == attack:
-                    break
-            if item1.weakness == attack1.movetype:
-                modifier = int(4)
-            else:
-                modifier = int(1)
-            damage = math.floor((((((2 * item2.level) / 5) + 2) * attack1.power * (item2.atk / item2.defe)) / 50) + 2) * modifier
-            item1.hp -= damage
-            if item1.hp > 0:
-                print(f'\nthe attack did {damage} damage!')
-                print(f'** {item1.name} has {item1.hp} HP remaining! **\n')
-            else:
-                print(f'\nthe attack did {damage} damage!')
-                print(f'** {item1.name} has 0 HP remaining! **\n')
-                print(f'\n{item1.name} has fainted! {item2.name} is the winner!\n')
+                    if battle_pokemon_1.weakness == attack1.movetype:
+                        modifier = int(4)
+                    else:
+                        modifier = int(1)
+                    damage = math.floor((((((2 * battle_pokemon_2.level) / 5) + 2) * attack1.power * (battle_pokemon_2.atk / battle_pokemon_2.defe)) / 50) + 2) * modifier
+                    battle_pokemon_1.hp -= damage
+                    if battle_pokemon_1.hp > 0:
+                        print(f'\nthe attack did {damage} damage!')
+                        print(f'** {battle_pokemon_1.name} has {battle_pokemon_1.hp} HP remaining! **\n')
+                    else:
+                        print(f'\nthe attack did {damage} damage!')
+                        print(f'** {battle_pokemon_1.name} has 0 HP remaining! **\n')
+                        print(f'\n{battle_pokemon_1.name} has fainted! {battle_pokemon_2.name} is the winner!\n')
 
 
 
@@ -143,7 +144,9 @@ if battle_choice == 'y':
     view_pokemon()
 else:
     print("That's OK! Peace out girlscout!")
-battle()
 
-
-
+choose_battle_pokemon_1
+battle_pokemon_1 = choose_battle_pokemon_1()
+choose_battle_pokemon_2
+battle_pokemon_2 = choose_battle_pokemon_2()
+battle(battle_pokemon_1,battle_pokemon_2)
